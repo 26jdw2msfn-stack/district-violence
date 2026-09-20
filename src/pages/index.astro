@@ -1,0 +1,1713 @@
+---
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DISTRICT VIOLENCE — Community Companion</title>
+    <meta name="description" content="District Violence community companion: killers, perks, items, patch notes, and playstyle quiz. One killer. Five survivors. Five generators." />
+    <link rel="icon" type="image/webp" href="vd-logo.webp" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* === TOKENS === */
+      :root {
+        --bg-deep: #0a0a0a;
+        --bg-panel: #121212;
+        --bg-card: #181818;
+        --bg-card-hover: #1d1d1d;
+        --text-primary: #f4f4f4;
+        --text-secondary: #a6a6a6;
+        --text-muted: #8a8a8a;
+        --accent: #e61919;
+        --accent-red-glow: rgba(230, 25, 25, 0.45);
+        --accent-green: #4ade80;
+        --accent-amber: #fbbf24;
+        --border-hairline: rgba(255, 255, 255, 0.07);
+        --border-strong: rgba(255, 255, 255, 0.14);
+        --font-display: 'Archivo Black', sans-serif;
+        --font-mono: 'JetBrains Mono', monospace;
+        --font-body: 'Manrope', system-ui, sans-serif;
+        --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
+        --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+      body {
+        background: var(--bg-deep);
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        font-size: 16px;
+        line-height: 1.6;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* === CRT OVERLAY === */
+      body::before {
+        content: '';
+        position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+        background: repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(0,0,0,0.18) 2px, rgba(0,0,0,0.18) 3px);
+        opacity: 0.6;
+      }
+      body::after {
+        content: '';
+        position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+        background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.55) 100%);
+      }
+
+      ::-webkit-scrollbar { width: 10px; }
+      ::-webkit-scrollbar-track { background: var(--bg-deep); }
+      ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 5px; border: 2px solid var(--bg-deep); }
+      ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+      .display { font-family: var(--font-display); letter-spacing: -0.02em; line-height: 0.95; }
+      .mono { font-family: var(--font-mono); }
+      .eyebrow {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--accent);
+        padding: 4px 12px;
+        border: 1px solid var(--accent);
+        border-radius: 999px;
+        background: rgba(230, 25, 25, 0.08);
+      }
+
+      a { color: inherit; text-decoration: none; }
+      img { max-width: 100%; display: block; }
+      button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+      .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+      /* === NAV === */
+      nav {
+        position: fixed;
+        top: 24px; left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        background: rgba(10, 10, 10, 0.7);
+        backdrop-filter: blur(24px) saturate(1.4);
+        -webkit-backdrop-filter: blur(24px) saturate(1.4);
+        border: 1px solid var(--border-hairline);
+        border-radius: 999px;
+        padding: 8px 8px 8px 20px;
+        display: flex; align-items: center; gap: 20px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+      }
+      .nav-logo { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.04em; }
+      .nav-logo img { width: 30px; height: 30px; border-radius: 6px; }
+      .nav-logo .vd-dot { color: var(--accent); }
+      .nav-links { display: flex; align-items: center; gap: 2px; }
+      .nav-links a {
+        font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em;
+        text-transform: uppercase; color: var(--text-secondary);
+        padding: 8px 11px; border-radius: 999px;
+        transition: all 0.4s var(--ease-fluid);
+      }
+      .nav-links a:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+      .nav-cta {
+        font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em;
+        text-transform: uppercase; padding: 10px 18px; border-radius: 999px;
+        background: var(--accent); color: #fff;
+        display: flex; align-items: center; gap: 8px;
+        transition: all 0.4s var(--ease-fluid);
+        box-shadow: 0 0 0 0 var(--accent-red-glow);
+      }
+      .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--accent-red-glow); }
+      .nav-cta svg { width: 12px; height: 12px; fill: currentColor; }
+      @media (max-width: 1080px) { .nav-links { display: none; } }
+
+      /* === HERO === */
+      .hero { min-height: 100dvh; position: relative; display: flex; align-items: center; overflow: hidden;
+        /* The fog beam only tracks left/right. Letting the browser keep vertical
+           pan keeps the page scrollable on phones; without this, a downward drag
+           is seized as a scroll and the pointer is cancelled mid-gesture. */
+        touch-action: pan-y; }
+      .hero-bg { position: absolute; inset: 0; background: url('/hero-bg.jpg') center center / cover no-repeat; }
+      .hero-bg::before {
+        content: ''; position: absolute; inset: 0;
+        background:
+          linear-gradient(180deg, rgba(10,10,10,0.65) 0%, rgba(10,10,10,0.4) 30%, rgba(10,10,10,0.95) 85%, rgba(10,10,10,1) 100%),
+          linear-gradient(90deg, rgba(10,10,10,0.8) 0%, transparent 50%, rgba(10,10,10,0.8) 100%);
+      }
+      .hero-bg::after {
+        content: ''; position: absolute; inset: 0;
+        background: repeating-linear-gradient(0deg, transparent 0, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px);
+        mix-blend-mode: multiply;
+      }
+      .hero-content { position: relative; z-index: 2; padding-top: 120px; padding-bottom: 80px; width: 100%; }
+      .hero-meta-row {
+        display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+        margin-bottom: 28px;
+        font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em;
+        text-transform: uppercase; color: var(--text-secondary);
+      }
+      .status-pill {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 6px 14px; border-radius: 999px;
+        background: rgba(74, 222, 128, 0.1); border: 1px solid rgba(74, 222, 128, 0.3);
+        color: var(--accent-green);
+      }
+      .status-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); animation: pulse 2s ease-in-out infinite; }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+      .hero-title { font-size: clamp(3.5rem, 12vw, 9rem); text-transform: uppercase; color: #fff; text-shadow: 0 0 40px rgba(230,25,25,0.35), 0 4px 30px rgba(0,0,0,0.7); margin-bottom: 8px; }
+      .hero-title .stroke { color: transparent; -webkit-text-stroke: 1.5px rgba(230, 25, 25, 0.65); }
+      .hero-sub { font-size: clamp(0.95rem, 1.6vw, 1.15rem); color: var(--text-secondary); max-width: 640px; margin-bottom: 40px; font-weight: 500; }
+      .play-giant {
+        display: inline-flex; align-items: center; gap: 14px;
+        font-family: var(--font-display); font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+        letter-spacing: 0.02em; color: #fff;
+        padding: 18px 32px; background: var(--accent); border-radius: 999px;
+        text-transform: uppercase; transition: all 0.5s var(--ease-fluid);
+        box-shadow: 0 16px 50px var(--accent-red-glow);
+        margin-bottom: 40px;
+      }
+      .play-giant:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 24px 70px var(--accent-red-glow), 0 0 0 4px rgba(230,25,25,0.25); }
+      .play-giant .arrow { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; transition: transform 0.4s var(--ease-fluid); }
+      .play-giant:hover .arrow { transform: translateX(6px); }
+      .hero-stats { display: flex; gap: 48px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+      .hero-stats .stat-val { display: block; font-family: var(--font-display); font-size: 1.6rem; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.02em; }
+
+      /* === MARQUEE === */
+      .marquee { border-top: 1px solid var(--border-hairline); border-bottom: 1px solid var(--border-hairline); background: var(--bg-panel); overflow: hidden; padding: 18px 0; position: relative; }
+      .marquee-track {
+        display: flex; gap: 80px; white-space: nowrap;
+        animation: marquee 28s linear infinite;
+        font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.2em;
+        text-transform: uppercase; color: var(--text-muted);
+      }
+      .marquee-track span.sep { color: var(--accent); }
+      @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+      /* === SECTIONS === */
+      section.block { padding: 120px 0; position: relative; }
+      .block-head { margin-bottom: 60px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+      .block-head h2 { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.4rem); text-transform: uppercase; line-height: 0.95; margin-top: 16px; }
+      .block-head p { color: var(--text-secondary); max-width: 460px; font-size: 0.95rem; }
+
+      /* === KILLER DOSSIER (interactive) === */
+      .dossier { display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: stretch; }
+      @media (max-width: 960px) { .dossier { grid-template-columns: 1fr; } }
+
+      .killer-nav { display: flex; flex-direction: column; gap: 12px; }
+      .killer-tab {
+        display: flex; align-items: center; gap: 14px;
+        background: var(--bg-card); border: 1px solid var(--border-hairline);
+        border-radius: 16px; padding: 16px 18px; text-align: left; width: 100%;
+        transition: all 0.45s var(--ease-fluid); position: relative; overflow: hidden;
+      }
+      .killer-tab:hover { background: var(--bg-card-hover); border-color: var(--border-strong); transform: translateX(4px); }
+      .killer-tab.active { border-color: var(--accent); background: rgba(230,25,25,0.08); box-shadow: 0 8px 30px rgba(230,25,25,0.14); }
+      .killer-tab.active::before {
+        content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent);
+      }
+      .killer-tab .glyph {
+        width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        font-family: var(--font-display); font-size: 1.2rem; color: var(--accent);
+        background: rgba(230,25,25,0.1); border: 1px solid rgba(230,25,25,0.25);
+      }
+      .killer-tab .kt-name { font-family: var(--font-display); font-size: 1.05rem; text-transform: uppercase; color: #fff; }
+      .killer-tab .kt-role { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
+
+      .dossier-panel {
+        background: var(--bg-card); border: 1px solid var(--border-hairline);
+        border-radius: 22px; padding: 36px; position: relative; overflow: hidden; min-height: 520px;
+      }
+      @media (max-width: 600px) { .dossier-panel { padding: 24px 20px; } }
+      .dossier-panel::before {
+        content: ''; position: absolute; inset: 0;
+        background: radial-gradient(600px 300px at 100% 0%, rgba(230,25,25,0.08), transparent 70%);
+        pointer-events: none;
+      }
+      .dp-content { position: relative; z-index: 1; animation: dpIn 0.55s var(--ease-out-back); }
+      @keyframes dpIn { from { opacity: 0; transform: translateY(18px) scale(0.985); } to { opacity: 1; transform: none; } }
+      .dp-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 18px; }
+      .dp-name { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); text-transform: uppercase; line-height: 1; }
+      .dp-quote { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); text-align: right; max-width: 240px; }
+      .dp-lore { color: var(--text-secondary); font-size: 0.94rem; max-width: 640px; margin-bottom: 26px; }
+
+      .dp-skill {
+        background: var(--bg-deep); border: 1px solid var(--border-strong);
+        border-left: 3px solid var(--accent); border-radius: 12px;
+        padding: 18px 22px; margin-bottom: 26px;
+      }
+      .dp-skill .skill-label { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+      .dp-skill .skill-name { font-family: var(--font-display); font-size: 1.2rem; text-transform: uppercase; margin-bottom: 6px; }
+      .dp-skill .skill-desc { font-size: 0.86rem; color: var(--text-secondary); }
+
+      .dp-subhead { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+      .dp-perks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 26px; }
+      @media (max-width: 760px) { .dp-perks { grid-template-columns: 1fr; } }
+      .dp-perk {
+        background: var(--bg-deep); border: 1px solid var(--border-hairline);
+        border-radius: 12px; padding: 16px; transition: all 0.4s var(--ease-fluid);
+      }
+      .dp-perk:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 26px rgba(230,25,25,0.12); }
+      .dp-perk .pname { font-weight: 700; font-size: 0.92rem; color: #fff; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+      .dp-perk .plvl { font-family: var(--font-mono); font-size: 0.58rem; color: var(--accent-amber); border: 1px solid rgba(251,191,36,0.4); padding: 2px 7px; border-radius: 4px; flex-shrink: 0; }
+      .dp-perk .pdesc { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; }
+
+      .dp-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+      @media (max-width: 520px) { .dp-stats { grid-template-columns: 1fr; } }
+      .stat-row .slabel { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+      .stat-row .sval { color: var(--text-primary); font-family: var(--font-mono); font-size: 0.72rem; }
+      .stat-bar { height: 6px; background: #232323; border-radius: 3px; overflow: hidden; }
+      .stat-bar .fill { height: 100%; background: linear-gradient(90deg, var(--accent), #ff5a5a); border-radius: 3px; width: 0; transition: width 1s var(--ease-fluid); }
+
+      /* === PERKS SHOWCASE === */
+      .perks-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+      @media (max-width: 900px) { .perks-grid-3 { grid-template-columns: 1fr; } }
+      .perk-show {
+        background: var(--bg-card); border: 1px solid var(--border-hairline);
+        border-radius: 18px; padding: 28px; position: relative; overflow: hidden;
+        transition: all 0.5s var(--ease-fluid);
+      }
+      .perk-show::after {
+        content: ''; position: absolute; inset: 0;
+        background: radial-gradient(300px 160px at 50% -20%, rgba(230,25,25,0.12), transparent 70%);
+        opacity: 0; transition: opacity 0.5s;
+      }
+      .perk-show:hover { border-color: var(--accent); transform: translateY(-6px); box-shadow: 0 20px 50px rgba(230,25,25,0.14); }
+      .perk-show:hover::after { opacity: 1; }
+      .perk-show .tier-badge {
+        display: inline-block; font-family: var(--font-display); font-size: 0.78rem;
+        letter-spacing: 0.08em; color: var(--accent); border: 1px solid var(--accent);
+        border-radius: 4px; padding: 3px 10px; margin-bottom: 16px;
+        background: rgba(230,25,25,0.1);
+      }
+      .perk-show h3 { font-family: var(--font-display); font-size: 1.3rem; text-transform: uppercase; margin-bottom: 10px; }
+      .perk-show .pdesc-main { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 14px; }
+      .perk-show .levels { display: flex; gap: 6px; }
+      .perk-show .lvl { flex: 1; text-align: center; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.06em; padding: 6px 4px; border-radius: 6px; border: 1px solid; }
+      .lvl.l1 { color: var(--accent-amber); border-color: rgba(251,191,36,0.35); background: rgba(251,191,36,0.06); }
+      .lvl.l2 { color: var(--accent-green); border-color: rgba(74,222,128,0.35); background: rgba(74,222,128,0.06); }
+      .lvl.l3 { color: var(--accent); border-color: rgba(230,25,25,0.4); background: rgba(230,25,25,0.07); }
+      .perk-show .flavor { margin-top: 14px; font-size: 0.78rem; color: var(--text-muted); font-style: italic; }
+
+      /* === ROADMAP / COMING SOON === */
+      .roadmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+      @media (max-width: 900px) { .roadmap { grid-template-columns: 1fr; } }
+      .road-card {
+        background: var(--bg-card); border: 1px solid var(--border-hairline);
+        border-radius: 18px; padding: 28px; position: relative; overflow: hidden;
+        transition: all 0.5s var(--ease-fluid);
+      }
+      .road-card:hover { border-color: var(--border-strong); transform: translateY(-4px); }
+      .road-card .rc-icon {
+        width: 44px; height: 44px; border-radius: 12px; margin-bottom: 16px;
+        display: flex; align-items: center; justify-content: center;
+        background: rgba(255,255,255,0.04); border: 1px solid var(--border-hairline);
+      }
+      .road-card .rc-icon svg { width: 20px; height: 20px; fill: var(--text-muted); }
+      .road-card h3 { font-family: var(--font-display); font-size: 1.15rem; text-transform: uppercase; margin-bottom: 8px; }
+      .road-card p { font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 16px; }
+      .road-card .soon {
+        display: inline-flex; align-items: center; gap: 6px;
+        font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em;
+        text-transform: uppercase; color: var(--accent-amber);
+        border: 1px dashed rgba(251,191,36,0.45); padding: 4px 10px; border-radius: 4px;
+      }
+      .road-card .soon .blink { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-amber); animation: pulse 1.6s infinite; }
+      .road-card .rc-lock {
+        position: absolute; top: 22px; right: 22px;
+        font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.14em;
+        color: var(--text-muted); border: 1px solid var(--border-hairline);
+        padding: 3px 8px; border-radius: 4px;
+      }
+
+      /* === ITEMS STRIP === */
+      .items-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+      @media (max-width: 900px) { .items-strip { grid-template-columns: 1fr; } }
+      .item-card {
+        background: var(--bg-card); border: 1px solid var(--border-hairline);
+        border-radius: 16px; padding: 24px; display: flex; gap: 16px; align-items: center;
+        transition: all 0.45s var(--ease-fluid);
+      }
+      .item-card:hover { border-color: var(--accent); background: var(--bg-card-hover); transform: translateY(-3px); }
+      .item-card .item-glyph {
+        width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        background: rgba(255,255,255,0.03); border: 1px solid var(--border-hairline);
+      }
+      .item-card .item-glyph svg { width: 24px; height: 24px; fill: var(--accent); }
+      .item-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
+      .item-card .item-meta { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+
+      /* === QUIZ === */
+      .quiz-wrap { background: var(--bg-card); border: 1px solid var(--border-hairline); border-radius: 24px; padding: 48px; max-width: 780px; margin: 0 auto; }
+      @media (max-width: 600px) { .quiz-wrap { padding: 28px 20px; } }
+      .quiz-q { margin-bottom: 32px; }
+      .quiz-q h3 { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+      .quiz-q .q-text { font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; color: #fff; }
+      .quiz-opts { display: flex; flex-wrap: wrap; gap: 10px; }
+      .quiz-opt {
+        font-family: var(--font-body); font-size: 0.9rem;
+        padding: 12px 22px; border-radius: 999px;
+        border: 1px solid var(--border-strong); background: var(--bg-deep);
+        color: var(--text-secondary); transition: all 0.35s var(--ease-fluid);
+      }
+      .quiz-opt:hover { border-color: var(--accent); color: #fff; background: rgba(230,25,25,0.1); }
+      .quiz-opt.selected { border-color: var(--accent); background: rgba(230,25,25,0.2); color: #fff; box-shadow: 0 0 0 1px var(--accent); }
+      .quiz-next {
+        margin-top: 24px; font-family: var(--font-mono); font-size: 0.78rem;
+        letter-spacing: 0.1em; text-transform: uppercase;
+        padding: 12px 24px; border-radius: 999px; background: #fff; color: #000;
+        transition: all 0.4s var(--ease-fluid);
+      }
+      .quiz-next:hover { transform: translateX(4px); }
+      .quiz-next:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+      .quiz-result { text-align: center; display: none; }
+      .quiz-result.show { display: block; animation: fadeUp 0.6s var(--ease-out-back); }
+      @keyframes fadeUp { from { opacity: 0; transform: translateY(20px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+      .result-card {
+        background: var(--bg-deep); border: 2px solid var(--accent); border-radius: 20px;
+        padding: 36px; margin-top: 20px; animation: stampIn 0.6s var(--ease-out-back);
+      }
+      @keyframes stampIn { 0% { transform: scale(0.9); opacity: 0; } 60% { transform: scale(1.03); } 100% { transform: scale(1); opacity: 1; } }
+      .result-card .result-name { font-family: var(--font-display); font-size: 2rem; text-transform: uppercase; color: #fff; margin-bottom: 8px; }
+      .result-card .result-tag { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 16px; }
+      .result-card p { color: var(--text-secondary); font-size: 0.92rem; max-width: 480px; margin: 0 auto 24px; }
+      .result-card .result-link { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
+      .result-card .result-link svg { width: 14px; height: 14px; fill: currentColor; transition: transform 0.3s; }
+      .result-card .result-link:hover svg { transform: translateX(4px); }
+
+      /* === MYTHS === */
+      .myths-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+      @media (max-width: 760px) { .myths-grid { grid-template-columns: 1fr; } }
+      .myth-card {
+        background: var(--bg-card); border: 1px solid var(--border-hairline);
+        border-radius: 18px; padding: 28px; position: relative; overflow: hidden;
+        transition: all 0.45s var(--ease-fluid); cursor: pointer;
+      }
+      .myth-card:hover { border-color: var(--border-strong); transform: translateY(-3px); }
+      .myth-q { font-size: 1.05rem; font-weight: 600; color: #fff; margin-bottom: 14px; padding-right: 60px; }
+      .myth-a { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.55; }
+      .myth-stamp {
+        position: absolute; top: 20px; right: 20px;
+        font-family: var(--font-display); font-size: 0.72rem; letter-spacing: 0.06em;
+        color: var(--accent); border: 2px solid var(--accent);
+        padding: 6px 12px; border-radius: 4px; transform: rotate(-8deg);
+        text-transform: uppercase; opacity: 0;
+        transition: all 0.4s var(--ease-out-back);
+        background: rgba(230,25,25,0.12); box-shadow: 0 0 12px var(--accent-red-glow);
+      }
+      .myth-card:hover .myth-stamp { opacity: 1; transform: rotate(-6deg) scale(1.05); }
+      .myth-card .confirmed {
+        position: absolute; top: 20px; right: 20px;
+        font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em;
+        text-transform: uppercase; color: var(--accent-green);
+        border: 1px solid rgba(74,222,128,0.5); padding: 4px 10px; border-radius: 4px; opacity: 0.7;
+      }
+
+      /* === FOOTER === */
+      footer { background: var(--bg-panel); border-top: 1px solid var(--border-hairline); padding: 80px 0 40px; position: relative; }
+      .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
+      @media (max-width: 760px) { .footer-grid { grid-template-columns: 1fr; } }
+      .footer-brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 16px; }
+      .footer-brand img { width: 36px; height: 36px; border-radius: 8px; }
+      .footer-brand .vd-dot { color: var(--accent); }
+      .footer-desc { color: var(--text-secondary); font-size: 0.88rem; max-width: 340px; }
+      .footer-col h4 { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+      .footer-col ul { list-style: none; }
+      .footer-col li { margin-bottom: 10px; }
+      .footer-col a { font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-secondary); transition: color 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+      .footer-col a:hover { color: var(--accent); }
+      .footer-bottom {
+        border-top: 1px solid var(--border-hairline); padding-top: 24px;
+        display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+        font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);
+        text-transform: uppercase; letter-spacing: 0.1em;
+      }
+      .credit-terminal {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 6px 12px; border-radius: 6px;
+        background: rgba(230, 25, 25, 0.06); border: 1px solid var(--border-hairline);
+      }
+
+      /* === TOAST === */
+      .toast {
+        position: fixed; bottom: 32px; left: 50%;
+        transform: translateX(-50%) translateY(120%);
+        background: var(--bg-panel); border: 1px solid var(--accent-green); color: var(--accent-green);
+        padding: 12px 24px; border-radius: 999px;
+        font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em;
+        z-index: 3000; transition: transform 0.5s var(--ease-out-back);
+        box-shadow: 0 8px 24px rgba(74,222,128,0.15);
+      }
+      .toast.show { transform: translateX(-50%) translateY(0); }
+
+      /* === FOG CANVAS (hero) === */
+      .fog-canvas { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
+      .fog-hint {
+        position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%);
+        z-index: 3; pointer-events: none;
+        font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.2em;
+        text-transform: uppercase; color: var(--text-muted);
+        border: 1px solid var(--border-hairline); padding: 7px 16px; border-radius: 999px;
+        background: rgba(10,10,10,0.6); backdrop-filter: blur(6px);
+        transition: opacity 1.4s ease;
+      }
+      .fog-hint.gone { opacity: 0; }
+
+      /* === THREAT FIELD (killer dossier) === */
+      .dossier { position: relative; }
+      .threat-field { position: absolute; inset: -40px; z-index: 0; pointer-events: none; }
+      .threat-field::before {
+        content: ''; position: absolute; inset: 0;
+        background: radial-gradient(240px circle at var(--tx, 50%) var(--ty, 50%),
+          rgba(230, 25, 25, calc(0.42 * var(--threat, 0))) 0%,
+          rgba(230, 25, 25, calc(0.12 * var(--threat, 0))) 45%,
+          transparent 75%);
+      }
+      .threat-field .heartbeat {
+        position: absolute; left: var(--tx, 50%); top: var(--ty, 50%);
+        width: 130px; height: 130px; margin: -65px 0 0 -65px;
+        border-radius: 50%; border: 2px solid rgba(230,25,25,0.75);
+        opacity: calc(0.85 * var(--threat, 0));
+        animation: heartbeat 1.6s ease-in-out infinite;
+      }
+      @keyframes heartbeat { 0%, 100% { transform: scale(0.7); } 50% { transform: scale(1.15); } }
+      .threat-label {
+        position: absolute; top: 6px; right: 10px;
+        font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.16em;
+        text-transform: uppercase; color: var(--accent);
+        opacity: calc(0.2 + 0.8 * var(--threat, 0));
+      }
+      .dossier > *:not(.threat-field) { position: relative; z-index: 1; }
+
+      /* === SKILL CHECK TRAINER === */
+      .sc-wrap {
+        display: grid; grid-template-columns: minmax(0, 460px) 1fr; gap: 44px; align-items: center;
+        background: var(--bg-card); border: 1px solid var(--border-hairline);
+        border-radius: 24px; padding: 44px;
+      }
+      @media (max-width: 820px) { .sc-wrap { grid-template-columns: 1fr; padding: 28px 20px; gap: 28px; } }
+      /* === SKILL CHECK — 1:1 after the in-game repair UI ===
+         Monochrome: thin white ring on dark glass, white success arc,
+         amber Great mark, thin red needle from centre, white [SPACE] plate. */
+      #skillcheck {
+        position: relative;
+        background:
+          radial-gradient(900px 520px at 50% 0%, rgba(40,24,12,0.55), transparent 65%),
+          linear-gradient(180deg, #0d0907 0%, #0a0705 60%, #070504 100%);
+      }
+      #skillcheck::before {
+        content: ''; position: absolute; inset: 0; pointer-events: none;
+        background: repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 2px, transparent 2px 4px);
+        opacity: 0.3; mix-blend-mode: multiply;
+      }
+      #skillcheck .container { position: relative; }
+
+      /* Arena: the game container. Taller than wide so the centred dial has
+         clear space above the corner-pinned REPAIR block. */
+      .sc-arena { position: relative; width: 100%; max-width: 420px; aspect-ratio: 1 / 1.25; margin: 0 auto;
+        --dial: min(70%, 300px); }
+
+      .sc-dial { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+        width: var(--dial); aspect-ratio: 1; border-radius: 50%;
+        background: rgba(12,10,9,0.78); backdrop-filter: blur(4px); }
+      .sc-dial::after { /* faint inner vignette */
+        content: ''; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+        background: radial-gradient(circle, transparent 55%, rgba(0,0,0,0.45) 100%);
+      }
+      .sc-svg { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+        width: var(--dial); height: auto; overflow: visible; cursor: pointer; z-index: 1; }
+      .sc-svg:focus { outline: none; }
+      .sc-svg:focus-visible { filter: drop-shadow(0 0 10px rgba(255,42,42,0.8)); }
+
+      .sc-ring { fill: none; stroke: #ffffff; stroke-width: 1.5; opacity: 0.9; }
+
+      .sc-zone { fill: none; stroke: #ffffff; stroke-width: 9; stroke-linecap: butt;
+        filter: drop-shadow(0 0 4px rgba(255,255,255,0.55)); }
+      .sc-zone-outline { fill: none; stroke: rgba(255,255,255,0.28); stroke-width: 12; stroke-linecap: butt; }
+      .sc-great { fill: none; stroke: #ffb84d; stroke-width: 9; stroke-linecap: butt;
+        filter: drop-shadow(0 0 6px rgba(255,184,77,0.95)); }
+      /* One clean thin red line — no glow, no double edge. */
+      .sc-needle { stroke: #ff0000; stroke-width: 2; stroke-linecap: butt; }
+
+      /* Centre key plate */
+      .sc-key { position: absolute; z-index: 2; left: 50%; top: 50%; transform: translate(-50%, -50%);
+        display: flex; align-items: center; gap: 6px;
+        border: 1.5px solid #ffffff; border-radius: 6px; padding: 9px 16px;
+        background: rgba(0,0,0,0.5); user-select: none; pointer-events: none; }
+      .sc-key span { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em; color: #ffffff; }
+
+      .sc-flash { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+        width: var(--dial); aspect-ratio: 1; border-radius: 50%; pointer-events: none; opacity: 0; z-index: 3; }
+      .sc-flash.miss { background: radial-gradient(circle, rgba(255,42,42,0.5), transparent 70%); animation: scFlash 0.45s ease-out; }
+      .sc-flash.great { background: radial-gradient(circle, rgba(255,214,140,0.55), transparent 70%); animation: scFlash 0.45s ease-out; }
+      .sc-flash.good { background: radial-gradient(circle, rgba(255,255,255,0.35), transparent 70%); animation: scFlash 0.3s ease-out; }
+      @keyframes scFlash { from { opacity: 1; } to { opacity: 0; } }
+
+      /* REPAIR block — own HTML block, corner of the container, clear of the dial */
+      .sc-repair { position: absolute; left: 20px; bottom: 20px; z-index: 2;
+        display: flex; align-items: center; gap: 12px; }
+      .sc-hand { width: 30px; height: 30px; fill: #ffffff; flex: none; }
+      .sc-repair-col { display: flex; flex-direction: column; gap: 6px; }
+      .sc-repair-label { font-family: var(--font-body); font-weight: 700; font-size: 0.82rem;
+        letter-spacing: 0.1em; color: #ffffff; text-transform: uppercase; }
+      .sc-repair-track { width: clamp(120px, 26vw, 240px); height: 9px;
+        background: #1a1a1a; border: 1px solid rgba(255,255,255,0.35); }
+      .sc-repair-fill { height: 100%; width: 0%; background: #ffffff;
+        transition: width 0.25s var(--ease-fluid); }
+      .sc-wrap.shake { animation: scShake 0.4s; }
+      @keyframes scShake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-7px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
+      /* During a repair only the dial + REPAIR bar may be seen; the side panel
+         (buttons, stats) fades out and stops taking clicks until the run ends. */
+      .sc-side { display: flex; flex-direction: column; gap: 20px;
+        transition: opacity 0.3s var(--ease-fluid); }
+      .sc-wrap.playing .sc-side { opacity: 0; pointer-events: none; }
+
+      /* Focus mode: on Start Repair the whole page dims, the dial glides up
+         and grows slightly into the middle of the viewport; on a win or reset
+         it glides back to its seat. */
+      .sc-backdrop { position: fixed; inset: 0; z-index: 2000; pointer-events: none;
+        background: rgba(6,4,3,0.96);
+        opacity: 0; transition: opacity 0.5s var(--ease-fluid); }
+      #skillcheck.playing .sc-backdrop { opacity: 1; }
+      .sc-wrap.playing { position: relative; z-index: 2100; }
+      .sc-arena { transition: transform 0.65s var(--ease-fluid); }
+      .sc-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+      .sc-start {
+        font-family: var(--font-display); font-size: 0.95rem; letter-spacing: 0.08em;
+        text-transform: uppercase; padding: 12px 26px; border-radius: 999px;
+        background: #ffffff; color: #0b0b0b;
+        transition: all 0.3s var(--ease-fluid); box-shadow: 0 8px 26px rgba(255,255,255,0.18);
+      }
+      .sc-start:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(255,255,255,0.3); }
+      .sc-reset {
+        font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em;
+        text-transform: uppercase; padding: 12px 20px; border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.4); color: rgba(255,255,255,0.7);
+        transition: all 0.3s; background: rgba(255,255,255,0.05);
+      }
+      .sc-reset:hover { border-color: #ff2a2a; color: #ffffff; }
+      .sc-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+      @media (max-width: 520px) { .sc-stats { grid-template-columns: repeat(2, 1fr); } }
+      .sc-stat { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 8px; padding: 10px 8px; text-align: center; }
+      .sc-stat .ss-val { display: block; font-family: var(--font-display); font-size: 1.15rem; color: #ffffff; }
+      .sc-stat .ss-lab { font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+      .sc-status { font-family: var(--font-mono); font-size: 0.72rem; color: rgba(255,255,255,0.65); letter-spacing: 0.04em; min-height: 1.4em; }
+      .sc-status.win { color: #ffd28c; text-shadow: 0 0 12px rgba(255,184,77,0.6); }
+      .sc-status.miss { color: #ff4a3a; text-shadow: 0 0 12px rgba(255,42,42,0.55); }
+
+      /* === SCROLL REVEAL === */
+      .reveal { opacity: 1; transform: none; transition: opacity 0.8s var(--ease-fluid), transform 0.8s var(--ease-fluid); }
+      .reveal.reveal-hidden { opacity: 0; transform: translateY(40px); }
+      .reveal.visible { opacity: 1; transform: translateY(0); }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <a href="#" class="nav-logo">
+        <img src="vd-logo.jpg" alt="VD" />
+        <span>DISTRICT<span class="vd-dot">·</span>VIOLENCE</span>
+      </a>
+      <div class="nav-links">
+        <a href="#killers">Killers</a>
+        <a href="#perks">Perks</a>
+        <a href="#skillcheck">Skill Check</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#quiz">Playstyle</a>
+        <a href="#facts">Facts</a>
+      </div>
+      <a href="https://www.roblox.com/games" target="_blank" rel="noopener" class="nav-cta">
+        Play
+        <svg viewBox="0 0 24 24"><path d="M8 5l8 7-8 7V5z"/></svg>
+      </a>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <canvas class="fog-canvas" id="fogCanvas"></canvas>
+      <span class="fog-hint" id="fogHint">Move to part the fog</span>
+      <div class="container hero-content">
+        <div class="hero-meta-row">
+          <span class="status-pill"><span class="dot"></span>Community Hub · Live</span>
+          <span>Asymmetric Horror · 1 Killer vs 5 Survivors</span>
+        </div>
+        <h1 class="hero-title display">
+          District<br/><span class="stroke">Violence</span>
+        </h1>
+        <p class="hero-sub">
+          One killer. Five survivors. Five generators to escape. This is the companion site for the
+          community — killer guides, perk picks, and straight answers. No filler, no clickbait.
+        </p>
+        <a href="https://www.roblox.com/games" target="_blank" rel="noopener" class="play-giant">
+          Play in Roblox
+          <span class="arrow"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="M8 5l8 7-8 7V5z"/></svg></span>
+        </a>
+        <div class="hero-stats">
+          <div><span class="stat-val">8</span> Killers in the District</div>
+          <div><span class="stat-val">5</span> Generators to Escape</div>
+          <div><span class="stat-val">0</span> Promo Codes (Official)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee">
+      <div class="marquee-track" id="marquee">
+        <span>DISTRICT VIOLENCE</span><span class="sep">◆</span>
+        <span>KILLER DOSSIER</span><span class="sep">◆</span>
+        <span>PERK INTEL</span><span class="sep">◆</span>
+        <span>PLAYSTYLE QUIZ</span><span class="sep">◆</span>
+        <span>PATCH WATCH</span><span class="sep">◆</span>
+        <span>MYTH BUSTING</span><span class="sep">◆</span>
+        <span>DISTRICT VIOLENCE</span><span class="sep">◆</span>
+        <span>KILLER DOSSIER</span><span class="sep">◆</span>
+        <span>PERK INTEL</span><span class="sep">◆</span>
+        <span>PLAYSTYLE QUIZ</span><span class="sep">◆</span>
+        <span>PATCH WATCH</span><span class="sep">◆</span>
+        <span>MYTH BUSTING</span><span class="sep">◆</span>
+      </div>
+    </div>
+
+    <!-- KILLER DOSSIER -->
+    <section class="block" id="killers">
+      <div class="container">
+        <div class="block-head reveal">
+          <div>
+            <span class="eyebrow">Killer Dossier</span>
+            <h2>Pick your killer.<br/>Read the file.</h2>
+          </div>
+          <p>Every killer plays different. Switch between three of the District's most wanted — real skills, real perks, real numbers.</p>
+        </div>
+
+        <div class="dossier reveal" id="dossierWrap">
+          <!-- terror-radius cursor field (decorative) -->
+          <div class="threat-field" aria-hidden="true">
+            <span class="threat-label" id="threatLabel">Terror Radius · 90 studs</span>
+            <span class="heartbeat"></span>
+          </div>
+          <!-- killer selector -->
+          <div class="killer-nav" id="killerNav">
+            <button class="killer-tab active" data-killer="veil">
+              <span class="glyph">V</span>
+              <span>
+                <span class="kt-name">The Veil</span>
+                <span class="kt-role">Ranged · Original</span>
+              </span>
+            </button>
+            <button class="killer-tab" data-killer="killer">
+              <span class="glyph">K</span>
+              <span>
+                <span class="kt-name">The Killer</span>
+                <span class="kt-role">Chase · Frenzy</span>
+              </span>
+            </button>
+            <button class="killer-tab" data-killer="masked">
+              <span class="glyph">M</span>
+              <span>
+                <span class="kt-name">The Masked</span>
+                <span class="kt-role">Versatile · Masks</span>
+              </span>
+            </button>
+          </div>
+
+          <!-- detail panel -->
+          <div class="dossier-panel" id="dossierPanel">
+            <div class="dp-content" id="dpContent"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PERKS -->
+    <section class="block" id="perks" style="background: var(--bg-panel);">
+      <div class="container">
+        <div class="block-head reveal">
+          <div>
+            <span class="eyebrow">Perk Intel</span>
+            <h2>Three survivor perks<br/>that actually carry</h2>
+          </div>
+          <p>Every perk has three levels — yellow, green, red. Here are three that show up in almost every winning loadout.</p>
+        </div>
+
+        <div class="perks-grid-3 reveal">
+          <div class="perk-show">
+            <span class="tier-badge">S Tier</span>
+            <h3>Absolute Confidence</h3>
+            <p class="pdesc-main">While in a chase, every survivor within 180 studs works faster and glows to you. Team-wide awareness, no cost.</p>
+            <div class="levels">
+              <div class="lvl l1">3% SPEED</div>
+              <div class="lvl l2">5% SPEED</div>
+              <div class="lvl l3">7% SPEED</div>
+            </div>
+            <p class="flavor">"Ladies, I've got this."</p>
+          </div>
+
+          <div class="perk-show">
+            <span class="tier-badge">S Tier</span>
+            <h3>Built Different</h3>
+            <p class="pdesc-main">Pick yourself back up from the dying state once per round, and gain Endurance after recovering. Pure plot armor.</p>
+            <div class="levels">
+              <div class="lvl l1">6s ENDURE</div>
+              <div class="lvl l2">7s ENDURE</div>
+              <div class="lvl l3">8s ENDURE</div>
+            </div>
+            <p class="flavor">"Did you really think I was some random?"</p>
+          </div>
+
+          <div class="perk-show">
+            <span class="tier-badge">A Tier</span>
+            <h3>Flowstate</h3>
+            <p class="pdesc-main">Fast-vault a window and you vault 20% quicker with a unique animation. Cooldown drops hard at red tier.</p>
+            <div class="levels">
+              <div class="lvl l1">70s COOLDOWN</div>
+              <div class="lvl l2">60s COOLDOWN</div>
+              <div class="lvl l3">50s COOLDOWN</div>
+            </div>
+            <p class="flavor">"I understand it now."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ITEMS -->
+    <section class="block" id="items">
+      <div class="container">
+        <div class="block-head reveal">
+          <div>
+            <span class="eyebrow">Survivor Loadout</span>
+            <h2>Items worth<br/>your screws</h2>
+          </div>
+          <p>Equipped in your loadout, bought in the shop. Three of the eleven currently in the game.</p>
+        </div>
+
+        <div class="items-strip reveal">
+          <div class="item-card">
+            <span class="item-glyph"><svg viewBox="0 0 24 24"><path d="M6 2l1 6-3 3 4 11 2-9 2 9 4-11-3-3 1-6-4 2-4-2z"/></svg></span>
+            <div>
+              <h3>Parrying Dagger</h3>
+              <span class="item-meta">Stun the killer</span>
+            </div>
+          </div>
+          <div class="item-card">
+            <span class="item-glyph"><svg viewBox="0 0 24 24"><path d="M3 4h4l1 3h11a2 2 0 002-2v0a2 2 0 00-2-2h-3l-1-2H6L4 6H3v2h1l2 12h2l-1-8h9l1 8h2l-2-12"/></svg></span>
+            <div>
+              <h3>Flashlight</h3>
+              <span class="item-meta">Blind the killer</span>
+            </div>
+          </div>
+          <div class="item-card">
+            <span class="item-glyph"><svg viewBox="0 0 24 24"><path d="M12 2l2 5 5 1-3.5 4 1 5.5-4.5-2.5L7.5 17.5l1-5.5L5 8l5-1z"/></svg></span>
+            <div>
+              <h3>Adrenaline Shot</h3>
+              <span class="item-meta">Second wind</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILL CHECK TRAINER -->
+    <section class="block" id="skillcheck">
+      <div class="container">
+        <div class="sc-backdrop" id="scBackdrop" aria-hidden="true"></div>
+        <div class="block-head reveal">
+          <div>
+            <span class="eyebrow">Skill Check Trainer</span>
+            <h2>Fix the generator.<br/>Don't miss.</h2>
+          </div>
+          <p>The survivor loop in its purest form. Catch the white zone — its bright amber edge counts as a Great. It speeds up as you go.</p>
+        </div>
+
+        <div class="sc-wrap reveal" id="scWrap">
+          <div class="sc-arena">
+            <div class="sc-dial" aria-hidden="true"></div>
+            <svg id="scSvg" viewBox="0 0 200 200" class="sc-svg" role="button" tabindex="0" aria-label="Skill check dial — tap or press space to repair">
+              <circle class="sc-ring" cx="100" cy="100" r="94"/>
+              <path class="sc-zone-outline" id="scZoneOutline" fill="none"/>
+              <path class="sc-zone" id="scZone" fill="none"/>
+              <path class="sc-great" id="scGreatZone" fill="none"/>
+              <line class="sc-needle" id="scNeedle" x1="100" y1="100" x2="100" y2="2"/>
+            </svg>
+            <div class="sc-key" aria-hidden="true"><span>[ SPACE ]</span></div>
+            <div class="sc-flash" id="scFlash"></div>
+            <div class="sc-repair" aria-hidden="true">
+              <svg class="sc-hand" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 22 L7 18.5 L4.8 17.8 L4.2 15.2 L7 14.2 L7 13.5
+                         L7 11.5 A1.5 1.5 0 0 1 10 11.5 L10 13.5
+                         L10.8 13.5 L10.8 10.3 A1.5 1.5 0 0 1 13.8 10.3 L13.8 13.5
+                         L14.6 13.5 L14.6 10.7 A1.5 1.5 0 0 1 17.6 10.7 L17.6 13.5
+                         L18.4 13.5 L18.4 11.2 A1.3 1.3 0 0 1 21 11.2 L21 13.5
+                         L21 22 Z"/>
+              </svg>
+              <div class="sc-repair-col">
+                <div class="sc-repair-label">PEMOHT</div>
+                <div class="sc-repair-track"><div class="sc-repair-fill" id="scChargeFill"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-side">
+            <div class="sc-cta">
+              <button class="sc-start" id="scStart">Start Repair</button>
+              <button class="sc-reset" id="scReset">Reset</button>
+            </div>
+            <div class="sc-stats">
+              <div class="sc-stat"><span class="ss-val" id="scStreak">0</span><span class="ss-lab">Streak</span></div>
+              <div class="sc-stat"><span class="ss-val" id="scGreat">0</span><span class="ss-lab">Greats</span></div>
+              <div class="sc-stat"><span class="ss-val" id="scMiss">0</span><span class="ss-lab">Misses</span></div>
+              <div class="sc-stat"><span class="ss-val" id="scBest">—</span><span class="ss-lab">Best Time</span></div>
+            </div>
+            <div class="sc-status" id="scStatus">Press Start Repair — or tap the dial.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP / COMING SOON -->
+    <section class="block" id="roadmap" style="background: var(--bg-panel);">
+      <div class="container">
+        <div class="block-head reveal">
+          <div>
+            <span class="eyebrow">Roadmap</span>
+            <h2>What this hub<br/>becomes next</h2>
+          </div>
+          <p>The site you're looking at is the foundation. Here's what's being built on top of it — every piece uses real game data.</p>
+        </div>
+
+        <div class="roadmap reveal">
+          <div class="road-card">
+            <span class="rc-lock">LOCKED</span>
+            <div class="rc-icon"><svg viewBox="0 0 24 24"><path d="M3 17h2v4h14v-4h2v-2H3v2zm9-13l6 7H6l6-7z"/></svg></div>
+            <h3>Full Killer Database</h3>
+            <p>All 8 killers with every skill, perk, outfit, stat and patch history — filterable by playstyle.</p>
+            <span class="soon"><span class="blink"></span>Coming Soon</span>
+          </div>
+          <div class="road-card">
+            <span class="rc-lock">LOCKED</span>
+            <div class="rc-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 10h16v4H4zM4 16h16v4H4z"/></svg></div>
+            <h3>Perk Tier List</h3>
+            <p>Every survivor and killer perk, rated and ranked. Community votes, real patch data, zero opinion-as-fact.</p>
+            <span class="soon"><span class="blink"></span>Coming Soon</span>
+          </div>
+          <div class="road-card">
+            <span class="rc-lock">LOCKED</span>
+            <div class="rc-icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5h-2v6l5 3 1-1.7-4-2.3V7z"/></svg></div>
+            <h3>Patch Tracker</h3>
+            <p>Every buff, nerf and fix the moment it goes live. Filter by killer, perk or map — no Discord scrolling.</p>
+            <span class="soon"><span class="blink"></span>Coming Soon</span>
+          </div>
+          <div class="road-card">
+            <span class="rc-lock">LOCKED</span>
+            <div class="rc-icon"><svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5zm0 8l9 5-9 5-9-5 9-5z"/></svg></div>
+            <h3>Loadout Builder</h3>
+            <p>Pick a playstyle, get a full build — perks, items and how they combo together, with a shareable link.</p>
+            <span class="soon"><span class="blink"></span>Coming Soon</span>
+          </div>
+          <div class="road-card">
+            <span class="rc-lock">LOCKED</span>
+            <div class="rc-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div>
+            <h3>Map Intel</h3>
+            <p>Generator spawns, pallet counts, vault positions and best loop routes, map by map.</p>
+            <span class="soon"><span class="blink"></span>Coming Soon</span>
+          </div>
+          <div class="road-card">
+            <span class="rc-lock">LOCKED</span>
+            <div class="rc-icon"><svg viewBox="0 0 24 24"><path d="M12 2l2 6h6l-5 4 2 7-5-4-5 4 2-7-5-4h6z"/></svg></div>
+            <h3>Community Stats</h3>
+            <p>Escape rates, killer pick rates and average match length — pulled from the community, shown honestly.</p>
+            <span class="soon"><span class="blink"></span>Coming Soon</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section class="block" id="quiz">
+      <div class="container">
+        <div class="block-head reveal">
+          <div>
+            <span class="eyebrow">Find Your Playstyle</span>
+            <h2>Three questions,<br/>one answer</h2>
+          </div>
+          <p>Tell us how you actually play and we'll point you at the role you should be maining.</p>
+        </div>
+
+        <div class="quiz-wrap reveal">
+          <div id="quizFlow">
+            <div class="quiz-q" data-q="1">
+              <h3>Question 01 / 03</h3>
+              <div class="q-text">When the round starts, what's your first move?</div>
+              <div class="quiz-opts">
+                <button class="quiz-opt" data-val="chase">Run straight at the killer</button>
+                <button class="quiz-opt" data-val="gen">Find the safest generator</button>
+                <button class="quiz-opt" data-val="team">Stick with the team</button>
+              </div>
+            </div>
+            <div class="quiz-q" data-q="2" style="display:none;">
+              <h3>Question 02 / 03</h3>
+              <div class="q-text">What scares you the most?</div>
+              <div class="quiz-opts">
+                <button class="quiz-opt" data-val="chase">Being chased</button>
+                <button class="quiz-opt" data-val="gen">Running out of time</button>
+                <button class="quiz-opt" data-val="team">Losing everyone else</button>
+              </div>
+            </div>
+            <div class="quiz-q" data-q="3" style="display:none;">
+              <h3>Question 03 / 03</h3>
+              <div class="q-text">What feels best in a match?</div>
+              <div class="quiz-opts">
+                <button class="quiz-opt" data-val="chase">Outplaying the killer</button>
+                <button class="quiz-opt" data-val="gen">Escaping with seconds left</button>
+                <button class="quiz-opt" data-val="team">Saving the whole squad</button>
+              </div>
+            </div>
+            <button class="quiz-next" id="quizNext" disabled>Next →</button>
+          </div>
+
+          <div class="quiz-result" id="quizResult">
+            <div class="result-card">
+              <div class="result-tag">Recommended role</div>
+              <div class="result-name display" id="resultName">—</div>
+              <p id="resultDesc"></p>
+              <a href="https://violencedistrict.fandom.com/wiki/Perks" target="_blank" rel="noopener" class="result-link">
+                Browse perks on the Wiki
+                <svg viewBox="0 0 24 24"><path d="M8 5l8 7-8 7V5z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FACTS / MYTHS -->
+    <section class="block" id="facts" style="background: var(--bg-panel);">
+      <div class="container">
+        <div class="block-head reveal">
+          <div>
+            <span class="eyebrow">Bust the Myths</span>
+            <h2>Facts vs <span style="color:var(--accent)">clickbait</span></h2>
+          </div>
+          <p>"Free codes" sites are bait. Here's the truth, straight from the game itself.</p>
+        </div>
+
+        <div class="myths-grid">
+          <div class="myth-card reveal">
+            <span class="myth-stamp">FAKE · NO CODES</span>
+            <div class="myth-q">Are there promo codes in District Violence?</div>
+            <div class="myth-a">No. The game has never had promo codes. Any site showing a "redeem now" box is serving ads and, in the worst cases, stealing accounts. There is nothing to redeem.</div>
+          </div>
+          <div class="myth-card reveal">
+            <span class="myth-stamp">FAKE · NO CODES</span>
+            <div class="myth-q">Can a YouTuber give me free Screws or Emblems?</div>
+            <div class="myth-a">No. Every "free currency" link in a video is expired or phishing. Currency only comes from playing the game, the in-game shop, or Roblox itself.</div>
+          </div>
+          <div class="myth-card reveal">
+            <span class="myth-stamp">FAKE · NO CODES</span>
+            <div class="myth-q">Do secret codes drop during events?</div>
+            <div class="myth-a">There are no event codes. Event rewards arrive through the game directly. Anything posted as "code: XXXX" is a screenshot from another game.</div>
+          </div>
+          <div class="myth-card reveal">
+            <span class="confirmed">Confirmed</span>
+            <div class="myth-q">Is the wiki the best place for real numbers?</div>
+            <div class="myth-a">Yes. Perk values, killer stats and patch history on the official Fandom wiki are community-maintained and match the live game — that's where this site pulls its data from.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-brand">
+              <img src="vd-logo.webp" alt="VD" />
+              <span>DISTRICT<span class="vd-dot">·</span>VIOLENCE</span>
+            </div>
+            <p class="footer-desc">
+              A community companion for District Violence. Not the dev team — just players who got
+              tired of digging through Discord for one perk number.
+            </p>
+          </div>
+          <div class="footer-col">
+            <h4>Community</h4>
+            <ul>
+              <li><a href="https://discord.gg/violencedistrict" target="_blank" rel="noopener">Discord Server ↗</a></li>
+              <li><a href="https://roblox.com/games" target="_blank" rel="noopener">Play on Roblox ↗</a></li>
+              <li><a href="#roadmap">Site Roadmap ↗</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="https://violencedistrict.fandom.com/wiki/Violence_District_Wiki" target="_blank" rel="noopener">Official Wiki ↗</a></li>
+              <li><a href="https://violencedistrict.fandom.com/wiki/Perks" target="_blank" rel="noopener">Wiki / Perks ↗</a></li>
+              <li><a href="#killers">Killer Dossier ↗</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div>© District Violence Community Hub</div>
+          <div class="credit-terminal">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="var(--accent)"><circle cx="5" cy="5" r="3"/></svg>
+            Fan-made · Data from the official wiki
+          </div>
+          <div>Build 2026.09</div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">Done</div>
+
+    <script is:inline>
+      // === KILLER DOSSIER DATA (from the official wiki) ===
+      const KILLERS = {
+        veil: {
+          name: 'The Veil',
+          quote: '"Your strikes distort time."',
+          lore: 'She ran from her own wedding after the worst news of her life — and an accident claimed her on the cold iron below. Her spirit lingers now, pierced by the spears that ended her, promising others the same fate.',
+          skill: 'Pierced Vow',
+          skillDesc: 'Switch from dagger to the spears lodged in her body. Charge and throw to slow survivors on headshots by 30%. Holds 2 spears, recharging every 15 seconds. Charge longer and the spear crosses into the other world — passing clean through walls.',
+          perks: [
+            { name: 'Piercing Reverie', lvl: 'LVL 15', desc: 'First hook blocks the top generator for 18s and boosts regression speed.' },
+            { name: 'Blood Between Worlds', lvl: 'LVL 30', desc: 'When a survivor loses a health state, the 2 best generators regress at up to 175% speed.' },
+            { name: 'Echo Of The Void', lvl: 'LVL 45', desc: 'A survivor staring at you gets their aura revealed — and their view turns monochrome.' },
+          ],
+          stats: [
+            { label: 'Movement Speed', val: '110%', pct: 55 },
+            { label: 'Intent Radius', val: '90 studs', pct: 60 },
+          ],
+        },
+        killer: {
+          name: 'The Killer',
+          quote: '"I spoke to the devil in Miami."',
+          lore: 'An amateur inspired by the urban legend. His clumsiness and sloppy methods betray his inexperience — but pair that with raw agility and erratic behavior and he becomes a real threat to groups.',
+          skill: 'Frenzy',
+          skillDesc: 'For 13 seconds: vault pallets instantly, move at 150% speed, and track every survivor in an enlarged terror radius with Killer Instinct. Every chained hit refills the gauge and makes him faster. The fourth hit downs outright — miss or get stunned, and fatigue stops him cold.',
+          perks: [
+            { name: 'Terror Spread', lvl: 'LVL 15', desc: 'Survivors finish a generator and suffer the Winded status for up to 40 seconds.' },
+            { name: 'Sloppy Mess', lvl: 'LVL 30', desc: 'Basic hits make survivors bleed more and slow their healing by up to 35%.' },
+            { name: 'Resentment Clinger', lvl: 'LVL 45', desc: 'Stuns and spikes grant tokens — each one extends lunge range by up to 50%.' },
+          ],
+          stats: [
+            { label: 'Movement Speed', val: '115%', pct: 62 },
+            { label: 'Intent Radius', val: '90 studs', pct: 60 },
+          ],
+        },
+        masked: {
+          name: 'The Masked',
+          quote: '"Do you like hurting other people?"',
+          lore: 'After cryptic messages left on his answering machine, he set out to recreate the slaughters that tore through Miami from 1989 to 1991 — all to catch the attention of 50 Blessings.',
+          skill: 'Mask Up',
+          skillDesc: 'Swap to a random mask every 30 seconds for a full minute, each one changing the game: the Tiger mask turns fists into instant downs, the Rat mask kills his terror radius entirely, and the Swan mask brings out a chainsaw.',
+          perks: [
+            { name: 'Hard Swing', lvl: 'LVL 15', desc: 'Basic hits apply the Winded status, shutting down survivor speed perks.' },
+            { name: 'Combo Streak', lvl: 'LVL 30', desc: 'Every basic hit grants a 5% speed boost for up to 13 seconds.' },
+            { name: 'Crackdown', lvl: 'LVL 45', desc: 'Generator kicks drain up to 9 extra charges.' },
+          ],
+          stats: [
+            { label: 'Movement Speed', val: '115%', pct: 62 },
+            { label: 'Intent Radius', val: '90 studs', pct: 60 },
+          ],
+        },
+      };
+
+      const dpContent = document.getElementById('dpContent');
+      const killerNav = document.getElementById('killerNav');
+
+      function renderKiller(key) {
+        const k = KILLERS[key];
+        if (!k) return;
+        dpContent.innerHTML = `
+          <div class="dp-top">
+            <div class="dp-name display">${k.name}</div>
+            <div class="dp-quote">${k.quote}</div>
+          </div>
+          <p class="dp-lore">${k.lore}</p>
+          <div class="dp-skill">
+            <div class="skill-label">Signature Skill</div>
+            <div class="skill-name">${k.skill}</div>
+            <div class="skill-desc">${k.skillDesc}</div>
+          </div>
+          <div class="dp-subhead">Personal Perks</div>
+          <div class="dp-perks">
+            ${k.perks.map(p => `
+              <div class="dp-perk">
+                <div class="pname"><span>${p.name}</span><span class="plvl">${p.lvl}</span></div>
+                <div class="pdesc">${p.desc}</div>
+              </div>`).join('')}
+          </div>
+          <div class="dp-subhead">Base Stats</div>
+          <div class="dp-stats">
+            ${k.stats.map(s => `
+              <div class="stat-row">
+                <div class="slabel"><span>${s.label}</span><span class="sval">${s.val}</span></div>
+                <div class="stat-bar"><div class="fill" data-pct="${s.pct}"></div></div>
+              </div>`).join('')}
+          </div>
+        `;
+        // restart entrance animation
+        dpContent.style.animation = 'none';
+        void dpContent.offsetHeight;
+        dpContent.style.animation = '';
+        // animate stat bars
+        requestAnimationFrame(() => {
+          dpContent.querySelectorAll('.fill').forEach(f => { f.style.width = f.dataset.pct + '%'; });
+        });
+        // sync the terror-radius readout with this killer
+        const tl = document.getElementById('threatLabel');
+        if (tl && k.stats[1]) tl.textContent = 'Terror Radius · ' + k.stats[1].val;
+      }
+
+      killerNav.addEventListener('click', (e) => {
+        const tab = e.target.closest('.killer-tab');
+        if (!tab) return;
+        killerNav.querySelectorAll('.killer-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        renderKiller(tab.dataset.killer);
+      });
+      renderKiller('veil');
+
+      // === QUIZ ===
+      const opts = document.querySelectorAll('.quiz-opt');
+      const nextBtn = document.getElementById('quizNext');
+      const quizFlow = document.getElementById('quizFlow');
+      const quizResult = document.getElementById('quizResult');
+      let currentQ = 1;
+      const answers = [];
+
+      const RESULTS = {
+        chase: { name: 'The Loopers', desc: 'You want the killer looking at you and nobody else. Start with vault and stun perks — Flowstate, Great Collapse — and learn every pallet on the map.' },
+        gen: { name: 'The Engineer', desc: 'You win matches by making generators disappear. Group Project and Flawless Execution were built for you — stack repair speed and hit your skill checks.' },
+        team: { name: 'The Medic', desc: 'Nobody gets left behind on your watch. Grab My Hand, Nobody Left Behind and Enhanced Touch — keep the squad alive and the escapes rolling.' },
+      };
+
+      function updateQuiz() {
+        document.querySelectorAll('.quiz-q').forEach(q => {
+          const n = parseInt(q.dataset.q, 10);
+          q.style.display = n === currentQ ? 'block' : 'none';
+        });
+        nextBtn.textContent = currentQ === 3 ? 'See Result →' : 'Next →';
+      }
+
+      opts.forEach(opt => {
+        opt.addEventListener('click', () => {
+          opt.parentElement.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          answers[parseInt(opt.parentElement.dataset.q, 10) - 1] = opt.dataset.val;
+          nextBtn.disabled = false;
+        });
+      });
+
+      nextBtn.addEventListener('click', () => {
+        if (nextBtn.disabled) return;
+        if (currentQ < 3) {
+          currentQ++;
+          updateQuiz();
+          nextBtn.disabled = true;
+        } else {
+          // most common answer wins
+          const counts = {};
+          answers.forEach(a => counts[a] = (counts[a] || 0) + 1);
+          const top = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
+          const r = RESULTS[top] || RESULTS.chase;
+          document.getElementById('resultName').textContent = r.name;
+          document.getElementById('resultDesc').textContent = r.desc;
+          quizFlow.style.display = 'none';
+          quizResult.classList.add('show');
+        }
+      });
+
+      // === MYTH STAMP TOGGLE (touch devices) ===
+      document.querySelectorAll('.myth-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const stamp = card.querySelector('.myth-stamp');
+          if (stamp) stamp.style.opacity = stamp.style.opacity === '1' ? '0' : '1';
+        });
+      });
+
+      // === TOAST ===
+      function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2400);
+      }
+
+      // === MARQUEE WIDTH ===
+      const marquee = document.getElementById('marquee');
+      if (marquee) marquee.style.width = 'max-content';
+
+      // === SCROLL REVEAL ===
+      const isScreenshot = new URLSearchParams(window.location.search).has('screenshot');
+      const fold = window.innerHeight;
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(el => {
+        if (isScreenshot) { el.classList.add('visible'); return; }
+        const rect = el.getBoundingClientRect();
+        if (rect.top > fold + 200) el.classList.add('reveal-hidden');
+        revealObserver.observe(el);
+      });
+
+      // === SMOOTH SCROLL WITH NAV OFFSET ===
+      document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', (e) => {
+          const id = a.getAttribute('href');
+          if (id.length > 1) {
+            const target = document.querySelector(id);
+            if (target) {
+              e.preventDefault();
+              const y = target.getBoundingClientRect().top + window.scrollY - 90;
+              window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+          }
+        });
+      });
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // === FOG CANVAS — cursor wipes the mist off the hero ===
+      (function fog() {
+        const canvas = document.getElementById('fogCanvas');
+        const hint = document.getElementById('fogHint');
+        if (!canvas) return;
+        const hero = document.querySelector('.hero');
+        const ctx = canvas.getContext('2d');
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        // Pre-render a soft noise tile once — the live loop only blits it.
+        const tile = document.createElement('canvas');
+        tile.width = tile.height = 220;
+        const tctx = tile.getContext('2d');
+        const img = tctx.createImageData(220, 220);
+        for (let i = 0; i < img.data.length; i += 4) {
+          const n = Math.random();
+          const v = 13 + n * 11;
+          img.data[i] = v; img.data[i + 1] = v; img.data[i + 2] = v + 3;
+          img.data[i + 3] = Math.round(55 + n * 155);
+        }
+        tctx.putImageData(img, 0, 0);
+
+        let W = 0, H = 0;
+        function resize() {
+          W = hero.clientWidth; H = hero.clientHeight;
+          canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+          canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        // Vertical parting beam: follows the cursor's X across the full hero
+        // height, with soft gradient edges on both sides. Fades in on move,
+        // out when the pointer leaves, so the photo only ever shows inside
+        // the beam — the rest stays buried in fog.
+        let targetX = 0, beamX = 0, targetA = 0, beamA = 0, beamInit = false;
+        let t = 0, visible = true;
+        // Touch devices have no hover: the beam needs other ways to move.
+        const coarse = window.matchMedia('(pointer: coarse)').matches;
+        let lastPointerAt = 0, tiltX = null;
+        const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0.05 });
+        io.observe(hero);
+
+        // A touch has no hover: track the down position so a tap (down+up with
+        // no real movement) can be told apart from a drag.
+        let downX = null, dragged = false;
+        function aimAt(e) {
+          const r = canvas.getBoundingClientRect();
+          targetX = e.clientX - r.left;
+          if (!beamInit) { beamX = targetX; beamInit = true; }
+          targetA = 1;
+          lastPointerAt = performance.now();
+          if (hint) hint.classList.add('gone');
+        }
+        hero.addEventListener('pointermove', (e) => {
+          if (downX !== null && Math.abs(e.clientX - downX) > 10) dragged = true;
+          aimAt(e);
+        });
+        // A tap is a down+up with no move — part the fog at the touch point
+        // anyway, so a single touch works, not only a drag.
+        hero.addEventListener('pointerdown', (e) => { downX = e.clientX; dragged = false; aimAt(e); });
+        // A mouse keeps hovering after a click; a finger lifts. Only a real
+        // drag closes the beam — a tap leaves the part open until the idle
+        // sweep reclaims it, so a single touch is not a dead touch.
+        hero.addEventListener('pointerup', (e) => {
+          if (e.pointerType !== 'mouse' && dragged) targetA = 0;
+          downX = null; dragged = false;
+        });
+        hero.addEventListener('pointercancel', () => { downX = null; dragged = false; });
+        // A real mouse leaving the hero should close the beam; on touch,
+        // pointerleave also fires right after lift, and pointerup has already
+        // decided — closing here too would snuff a tap the instant it lands.
+        hero.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') targetA = 0; });
+
+        // Phone tilt: gamma is left/right rotation, mapped onto the hero.
+        try {
+          window.addEventListener('deviceorientation', (e) => {
+            if (e.gamma == null) return;
+            const g = Math.max(-40, Math.min(40, e.gamma));
+            tiltX = W * (0.5 + (g / 40) * 0.45);
+          });
+        } catch (_) {}
+        // iOS 13+ gates the gyroscope behind a permission prompt — ask once,
+        // on the first touch, so it never blocks the page.
+        try {
+          if (typeof DeviceOrientationEvent !== 'undefined' &&
+              typeof DeviceOrientationEvent.requestPermission === 'function') {
+            hero.addEventListener('touchstart', () => {
+              DeviceOrientationEvent.requestPermission().catch(() => {});
+            }, { once: true });
+          }
+        } catch (_) {}
+        if (coarse && hint) hint.textContent = 'Drag or tilt to part the fog';
+
+        if (reducedMotion) { canvas.style.display = 'none'; return; }
+
+        function frame() {
+          if (visible) {
+            t += 0.004;
+            // Clear first: the tiles are stamped every frame with source-over,
+            // so without this the fog compounds to a fully opaque wall within
+            // a second and buries even the beam.
+            ctx.clearRect(0, 0, W, H);
+            const offX = Math.sin(t) * 30, offY = Math.cos(t * 0.8) * 20;
+            ctx.globalCompositeOperation = 'source-over';
+            for (let x = -110; x < W + 110; x += 220) {
+              for (let y = -110; y < H + 110; y += 220) {
+                ctx.drawImage(tile, x + offX, y + offY);
+              }
+            }
+            // On a touch device with no recent input, the beam is steered by
+            // the gyroscope, or drifts on its own so the effect is visible
+            // before the player has touched anything.
+            if (coarse && performance.now() - lastPointerAt > 2500) {
+              if (tiltX !== null) { targetX = tiltX; targetA = 1; }
+              else { targetX = W / 2 + Math.sin(t * 0.7) * W * 0.3; targetA = 0.8; }
+              if (!beamInit) { beamX = targetX; beamInit = true; }
+            }
+            beamX += (targetX - beamX) * 0.14;
+            beamA += (targetA - beamA) * 0.06;
+            if (beamA > 0.005) {
+              const bw = Math.min(520, W * 0.42);
+              const a = beamA.toFixed(3);
+              // Soft-edged band: transparent at both rims, strongest on the
+              // axis — that's the left/right gradient the beam fades through.
+              const g = ctx.createLinearGradient(beamX - bw / 2, 0, beamX + bw / 2, 0);
+              g.addColorStop(0, 'rgba(0,0,0,0)');
+              g.addColorStop(0.5, `rgba(0,0,0,${(0.82 * a).toFixed(3)})`);
+              g.addColorStop(1, 'rgba(0,0,0,0)');
+              ctx.globalCompositeOperation = 'destination-out';
+              ctx.fillStyle = g;
+              ctx.fillRect(beamX - bw / 2, 0, bw, H);
+              // A faint cool light along the part, so the beam reads as light
+              // rather than a hole — keeps the photo "in fog", not naked.
+              const lg = ctx.createLinearGradient(beamX - bw / 2, 0, beamX + bw / 2, 0);
+              lg.addColorStop(0, 'rgba(190,210,255,0)');
+              lg.addColorStop(0.5, `rgba(190,210,255,${(0.05 * a).toFixed(3)})`);
+              lg.addColorStop(1, 'rgba(190,210,255,0)');
+              ctx.globalCompositeOperation = 'source-over';
+              ctx.fillStyle = lg;
+              ctx.fillRect(beamX - bw / 2, 0, bw, H);
+            }
+          }
+          requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      })();
+
+      // === THREAT FIELD — cursor proximity drives the terror radius ===
+      (function threat() {
+        const wrap = document.getElementById('dossierWrap');
+        if (!wrap || reducedMotion) return;
+        function onMove(e) {
+          const r = wrap.getBoundingClientRect();
+          const x = e.clientX - r.left, y = e.clientY - r.top;
+          const active = wrap.querySelector('.killer-tab.active');
+          let tx = r.width / 2, ty = r.height / 2;
+          if (active) {
+            const a = active.getBoundingClientRect();
+            tx = a.left + a.width / 2 - r.left;
+            ty = a.top + a.height / 2 - r.top;
+          }
+          const dist = Math.hypot(x - tx, y - ty);
+          const threat = Math.max(0, 1 - dist / 420);
+          wrap.style.setProperty('--threat', threat.toFixed(2));
+          wrap.style.setProperty('--tx', x + 'px');
+          wrap.style.setProperty('--ty', y + 'px');
+        }
+        wrap.addEventListener('mousemove', onMove);
+        wrap.addEventListener('mouseleave', () => wrap.style.setProperty('--threat', '0'));
+      })();
+
+      // === SKILL CHECK TRAINER ===
+      (function skillCheck() {
+        const svg = document.getElementById('scSvg');
+        const wrap = document.getElementById('scWrap');
+        if (!svg) return;
+        const elZone = document.getElementById('scZone');
+        const elZoneOutline = document.getElementById('scZoneOutline');
+        const elGreatZone = document.getElementById('scGreatZone');
+        const elNeedle = document.getElementById('scNeedle');
+        const elCharge = document.getElementById('scChargeFill');
+        const elFlash = document.getElementById('scFlash');
+        const elStatus = document.getElementById('scStatus');
+        const elStart = document.getElementById('scStart');
+        const elReset = document.getElementById('scReset');
+        const elStreak = document.getElementById('scStreak');
+        const elGreat = document.getElementById('scGreat');
+        const elMiss = document.getElementById('scMiss');
+        const elBest = document.getElementById('scBest');
+        const elArena = document.querySelector('.sc-arena');
+        const section = document.getElementById('skillcheck');
+
+        const KEY = 'vd_skillcheck_best';
+        // Ring radius in viewBox units; the glass disc is 94% of the arena so
+        // the success zone rides exactly on its edge.
+        const RING_R = 94;
+        // Bright Great sector rides the leading edge of the success zone — the
+        // first degrees the needle sweeps into. Success zone itself is 20-30°.
+        const GREAT_DEG = 4;
+
+        const S = {
+          playing: false, progress: 0, angle: 180, speed: 1.8,
+          zoneStart: 0, zoneSize: 30,
+          streak: 0, greats: 0, misses: 0, startMs: 0, raf: 0,
+        };
+
+        let bestMs = parseInt(localStorage.getItem(KEY) || '0', 10) || 0;
+        if (bestMs) elBest.textContent = (bestMs / 1000).toFixed(1) + 's';
+
+        function arcPath(a0, a1) {
+          const r = RING_R;
+          const p = (a) => [100 + r * Math.cos(a), 100 + r * Math.sin(a)];
+          const [x0, y0] = p(a0), [x1, y1] = p(a1);
+          const large = (a1 - a0) > Math.PI ? 1 : 0;
+          return `M ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
+        }
+        const toRad = (deg) => (deg - 90) * Math.PI / 180;
+
+        function drawZone() {
+          const a0 = toRad(S.zoneStart);
+          const a1 = toRad(S.zoneStart + S.zoneSize);
+          elZoneOutline.setAttribute('d', arcPath(a0, a1));
+          elZone.setAttribute('d', arcPath(a0, a1));
+          elGreatZone.setAttribute('d', arcPath(a0, toRad(S.zoneStart + GREAT_DEG)));
+        }
+        function drawProgress() {
+          elCharge.style.width = S.progress.toFixed(1) + '%';
+        }
+        function drawNeedle() {
+          elNeedle.setAttribute('transform', `rotate(${S.angle.toFixed(1)} 100 100)`);
+        }
+
+        function newZone() {
+          // Spawn the next zone ahead of the needle, within 40-160 degrees of
+          // travel, so a ready player gets a hit window every half-second or so
+          // instead of waiting on a full slow sweep.
+          S.zoneStart = (S.angle + 40 + Math.random() * 120) % 360;
+          S.zoneSize = Math.max(20, 30 - S.progress * 0.08);
+          drawZone();
+        }
+
+        function setStatus(msg, cls) {
+          elStatus.textContent = msg;
+          elStatus.className = 'sc-status' + (cls ? ' ' + cls : '');
+        }
+
+        function flash(cls) {
+          elFlash.classList.remove('miss', 'great');
+          void elFlash.offsetWidth;
+          elFlash.classList.add(cls);
+        }
+
+        // Focus mode: lift the arena into the middle of the viewport and scale
+        // it up a touch.
+        function centerDial() {
+          if (!elArena) return;
+          // Two things must be neutralised before measuring, or the dial
+          // lands off-centre: the reveal animation (it drives the wrap's
+          // transform) and any smooth scroll still in flight (it shifts the
+          // page after we let go of the measurement).
+          wrap.classList.remove('reveal-hidden');
+          wrap.classList.add('visible');
+          const hadWrapT = wrap.style.transition;
+          const hadArenaT = elArena.style.transition;
+          wrap.style.transition = 'none';
+          elArena.style.transition = 'none';
+          elArena.style.transform = '';      // measure from the seated position
+          void elArena.offsetWidth;
+          const r = elArena.getBoundingClientRect();
+          wrap.style.transition = hadWrapT;
+          elArena.style.transition = hadArenaT;
+          const vw = window.innerWidth, vh = window.innerHeight;
+          const kFit = Math.min((vw * 0.94) / r.width, (vh * 0.86) / r.height);
+          const k = Math.min(1.5, Math.max(1.08, kFit));
+          // transform-origin is the arena's own centre, so the scale keeps the
+          // centre fixed and the translate carries it to the middle of the
+          // viewport.
+          const dx = vw / 2 - (r.left + r.width / 2);
+          const dy = vh / 2 - (r.top + r.height / 2);
+          elArena.style.transform =
+            `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(${k.toFixed(3)})`;
+        }
+        function setFocus(on) {
+          const root = document.documentElement;
+          if (on) {
+            // An in-flight smooth scroll (nav anchor click, scrollIntoView)
+            // would drag the dial off-centre after we position it — cancel it.
+            root.style.scrollBehavior = 'auto';
+            window.scrollTo({ top: window.scrollY, behavior: 'instant' });
+            root.style.overflow = 'hidden';
+            section.classList.add('playing');
+            centerDial();
+            // Re-verify one frame later in case anything still shifted.
+            requestAnimationFrame(() => { if (S.playing) centerDial(); });
+          } else {
+            section.classList.remove('playing');
+            root.style.overflow = '';
+            root.style.scrollBehavior = '';
+            elArena.style.transform = '';
+          }
+        }
+        window.addEventListener('resize', () => { if (S.playing) centerDial(); });
+
+        function start() {
+          if (S.playing) return;
+          S.playing = true;
+          S.progress = 0; S.angle = 180; S.speed = 1.8;
+          S.streak = 0; S.greats = 0; S.misses = 0;
+          S.startMs = performance.now();
+          elStreak.textContent = '0'; elGreat.textContent = '0'; elMiss.textContent = '0';
+          elStart.textContent = 'Repairing…';
+          wrap.classList.add('playing');
+          setFocus(true);
+          newZone(); drawProgress(); drawNeedle();
+          setStatus('Catch the white zone. Amber edge = Great.');
+          loop();
+        }
+
+        function reset() {
+          cancelAnimationFrame(S.raf);
+          S.playing = false;
+          S.progress = 0; S.angle = 180; S.speed = 1.8;
+          elStreak.textContent = '0'; elGreat.textContent = '0'; elMiss.textContent = '0';
+          elStart.textContent = 'Start Repair';
+          wrap.classList.remove('playing');
+          setFocus(false);
+          elZoneOutline.setAttribute('d', '');
+          elZone.setAttribute('d', ''); elGreatZone.setAttribute('d', '');
+          elCharge.style.width = '0%';
+          drawProgress(); drawNeedle();
+          setStatus('Press Start Repair — or tap the dial.');
+        }
+
+        function loop() {
+          S.angle += S.speed;
+          if (S.angle >= 360) {
+            // full sweep with no input = missed timing
+            S.angle -= 360;
+            registerMiss(true);
+          }
+          drawNeedle();
+          if (S.playing) S.raf = requestAnimationFrame(loop);
+        }
+
+        function registerMiss(silent) {
+          // A full sweep you let pass costs less than a wild tap — punishment
+          // scales with recklessness, so careful play always climbs.
+          S.progress = Math.max(0, S.progress - (silent ? 4 : 6));
+          S.misses++; S.streak = 0;
+          elMiss.textContent = S.misses;
+          elStreak.textContent = '0';
+          drawProgress();
+          if (silent) {
+            setStatus('The needle slipped past the zone…', 'miss');
+          } else {
+            flash('miss');
+            wrap.classList.remove('shake');
+            void wrap.offsetWidth;
+            wrap.classList.add('shake');
+            setStatus('MISSED — the generator regresses.', 'miss');
+          }
+        }
+
+        function attemptHit() {
+          if (!S.playing) { start(); return; }
+          const rel = ((S.angle - S.zoneStart) % 360 + 360) % 360;
+          if (rel < S.zoneSize) {
+            // The bright leading edge of the zone is the Great window.
+            const great = rel < GREAT_DEG;
+            let gain = great ? 14 : 8;
+            S.streak++;
+            // Every clean streak of 5 banks a bonus charge — rewards steady hands.
+            if (great && S.streak % 5 === 0) gain += 4;
+            if (great) S.greats++;
+            S.progress = Math.min(100, S.progress + gain);
+            elStreak.textContent = S.streak;
+            elGreat.textContent = S.greats;
+            drawProgress();
+            flash(great ? 'great' : 'good');
+            setStatus(
+              great ? `GREAT — +${gain} charge. Streak ${S.streak}.` : `Good hit — +${gain} charge.`,
+              great ? 'win' : ''
+            );
+            if (S.progress >= 100) { win(); return; }
+            S.speed = 1.8 + (S.progress / 100) * 2.2;
+            newZone();
+          } else {
+            registerMiss(false);
+          }
+        }
+
+        function win() {
+          cancelAnimationFrame(S.raf);
+          S.playing = false;
+          const ms = performance.now() - S.startMs;
+          if (!bestMs || ms < bestMs) {
+            bestMs = Math.round(ms);
+            localStorage.setItem(KEY, String(bestMs));
+            elBest.textContent = (bestMs / 1000).toFixed(1) + 's';
+          }
+          elStart.textContent = 'Repair Again';
+          wrap.classList.remove('playing');
+          setFocus(false);
+          setStatus(`Generator powered in ${(ms / 1000).toFixed(1)}s — ${S.greats} greats, ${S.misses} misses.`, 'win');
+        }
+
+        elStart.addEventListener('click', (e) => { e.stopPropagation(); if (!S.playing) start(); });
+        elReset.addEventListener('click', (e) => { e.stopPropagation(); reset(); });
+        svg.addEventListener('click', attemptHit);
+        svg.addEventListener('keydown', (e) => {
+          if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); attemptHit(); }
+        });
+        // Space works anywhere while the trainer is on screen
+        window.addEventListener('keydown', (e) => {
+          if (e.key !== ' ' || e.repeat) return;
+          const r = wrap.getBoundingClientRect();
+          const onScreen = r.bottom > 0 && r.top < window.innerHeight;
+          if (onScreen) { e.preventDefault(); attemptHit(); }
+        });
+
+        drawNeedle();
+      })();
+    </script>
+  </body>
+</html>

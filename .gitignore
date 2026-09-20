@@ -1,0 +1,19 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+screenshots/
+*.log
+
+# Local-only: strategy notes, source photos and test/research harnesses.
+# These never belong in the public repo.
+PRODUCT.md
+Photos/
+skills-lock.json
+.zcodeignore
+.agents/
+.claude/
+.codex/
+agent/
+wrangler.jsonc.bak
+*.cjs
