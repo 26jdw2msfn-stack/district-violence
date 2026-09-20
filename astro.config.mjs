@@ -1,10 +1,10 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  // Two hosts, two roots: Cloudflare Pages serves at the bare domain, GitHub
-  // Pages serves from /district-violence/. CF_PAGES is set automatically by
-  // Cloudflare's build, so the base path only kicks in on GitHub Actions.
-  site: process.env.CF_PAGES ? 'https://district-violence.pages.dev' : 'https://26jdw2msfn-stack.github.io',
-  base: process.env.CF_PAGES ? undefined : '/district-violence/',
+  // Two hosts, two roots. Cloudflare serves at the bare domain; GitHub Pages
+  // serves from /district-violence/. The GitHub workflow sets BASE_PATH
+  // explicitly — Cloudflare leaves it unset, so it builds for the root.
+  site: process.env.BASE_PATH ? 'https://26jdw2msfn-stack.github.io' : 'https://district-violence.sherstiukmark.workers.dev',
+  base: process.env.BASE_PATH,
   output: 'static',
 });

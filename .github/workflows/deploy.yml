@@ -25,7 +25,11 @@ jobs:
           cache: npm
       # Dev tooling (Playwright browsers) is not needed to build the site.
       - run: npm ci --omit=dev
+      # GitHub Pages serves from /district-violence/, Cloudflare from the root.
+      # The base path is set here so the two hosts never diverge.
       - run: npm run build
+        env:
+          BASE_PATH: /district-violence/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
